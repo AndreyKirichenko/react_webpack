@@ -1,12 +1,14 @@
 const merge = require('webpack-merge');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+let CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const js = require('./webpack/js');
-// const sass = require('./webpack/sass');
 const css = require('./webpack/css');
+const favicon = require('./webpack/favicon');
 
 
+const devserver = require('./webpack/devserver');
 
 const common = merge([
   {
@@ -20,17 +22,24 @@ const common = merge([
     plugins: [
       new HtmlWebpackPlugin({
         template: './src/index.html'
-      })
+      }),
+
+      new CopyWebpackPlugin([
+        { from: 'src/img/', to: 'img/', force: true },
+        { from: 'src/fonts/', to: 'fonts/', force: true }
+      ], {})
     ]
   },
   js(),
   css(),
+  favicon(),
 ]);
 
 module.exports = function(env, argv) {
   if (argv.mode === 'development') {
     return merge([
-      common
+      common,
+      devserver(),
     ]);
   }
 
