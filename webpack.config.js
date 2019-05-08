@@ -7,15 +7,22 @@ const js = require('./webpack/js');
 const css = require('./webpack/css');
 const favicon = require('./webpack/favicon');
 
-
+const sourceMap = require('./webpack/sourceMap');
 const devserver = require('./webpack/devserver');
+const lintJS = require('./webpack/js.lint');
+const lintCSS = require('./webpack/sass.lint');
+
+const PATHS = {
+  source: path.join(__dirname, 'src'),
+  build: path.join(__dirname, 'build'),
+};
 
 const common = merge([
   {
     entry: './src/index.js',
 
     output: {
-      path: path.join(__dirname, '/dist'),
+      path: PATHS.build,
       filename: 'index.js'
     },
 
@@ -40,6 +47,9 @@ module.exports = function(env, argv) {
     return merge([
       common,
       devserver(),
+      sourceMap(),
+      lintJS({ paths: PATHS.source }),
+      lintCSS()
     ]);
   }
 
