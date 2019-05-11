@@ -23,6 +23,10 @@ const common = merge([
   {
     entry: './src/index.js',
 
+    devServer: {
+      historyApiFallback: true,
+    },
+
     output: {
       path: PATHS.build,
       filename: 'index.js'
