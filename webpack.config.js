@@ -9,6 +9,7 @@ const favicon = require('./webpack/favicon');
 const webworker = require('./webpack/webworker');
 const nodeEnv = require('./webpack/node.env');
 
+const pug = require('./webpack/pug');
 const sourceMap = require('./webpack/sourceMap');
 const devserver = require('./webpack/devserver');
 const lintJS = require('./webpack/js.lint');
@@ -34,16 +35,18 @@ const common = merge([
 
     plugins: [
       new HtmlWebpackPlugin({
-        template: './src/index.html'
+        template: './src/index.html',
+        template: PATHS.source + '/pug/index.pug',
       }),
 
       new CopyWebpackPlugin([
-        { from: 'src/img/', to: 'img/', force: true },
-        { from: 'src/fonts/', to: 'fonts/', force: true },
-        { from: 'src/robots.txt', to: '', force: true }
+        { from: PATHS.source + '/img/', to: 'img/', force: true },
+        { from: PATHS.source + '/fonts/', to: 'fonts/', force: true },
+        { from: PATHS.source + '/robots.txt', to: '', force: true }
       ], {})
     ]
   },
+  pug(),
   js(),
   css(),
   favicon(),
